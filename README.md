@@ -22,8 +22,6 @@ git clone https://github.com/IAMTHENORMALDUDE/sit737-2025-prac7p.git
 cd sit737-2025-prac7p
 ```
 
-````
-
 ### Deploy MongoDB
 
 1. Apply storage and service:
@@ -116,4 +114,3 @@ cd sit737-2025-prac7p
 ## Reflection
 
 Adding MongoDB with CRUD, HA, and backups made my microservice more robust. Debugging the headless service and replica set was a key learning experience.
-````
