@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  calculator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_USER=calcuser
+      - MONGO_PASSWORD=calcpassword
+      - MONGO_HOST=mongo
+    depends_on:
+      - mongo
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - calc-network
+
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=adminpassword
+      - MONGO_INITDB_DATABASE=calculator_db
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - calc-network
+    command: mongod --bind_ip_all
+
+networks:
+  calc-network:
+    driver: bridge
+
+volumes:
+  mongo-data:

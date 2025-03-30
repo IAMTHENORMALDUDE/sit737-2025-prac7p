@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mongo-backup
+spec:
+  schedule: "* * * * *" # Hourly backups
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: mongodump
+              image: mongo:5.0
+              command:
+                - sh
+                - -c
+                - |
+                  mongodump --host=mongo-service --port=27017 --username=calcuser --password=calcpassword --db=calculator_db --out=/backup/$(date +\\%Y-\\%m-\\%dT\\%H-\\%M-\\%S)
+              volumeMounts:
+                - name: backup-storage
+                  mountPath: /backup
+          restartPolicy: Never
+          volumes:
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: mongo-backup-pvc
